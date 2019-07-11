@@ -3,6 +3,7 @@ package org.apache.spark.sql.kinesis;
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.InstanceProfileCredentialsProvider;
+import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -17,7 +18,7 @@ public class AWSInstanceProfileCredentialsProviderWithRetries
         int sleep = 500;
         while(retries > 0) {
             try {
-                return super.getCredentials();
+                return new DefaultAWSCredentialsProviderChain().getCredentials();
             }
             catch (RuntimeException re) {
                 LOG.error("Got an exception while fetching credentials " + re);
